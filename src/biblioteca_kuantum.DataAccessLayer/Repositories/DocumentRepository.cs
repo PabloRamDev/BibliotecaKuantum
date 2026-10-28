@@ -4,8 +4,6 @@ using biblioteca_kuantum.DataAccessLayer.Data;
 using biblioteca_kuantum.DataAccessLayer.Models;
 using biblioteca_kuantum.DataAccessLayer.RepositoryContracts;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using System.Xml.Linq;
 
 
 namespace biblioteca_kuantum.DataAccessLayer.Repositories
