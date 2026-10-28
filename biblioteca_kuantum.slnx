@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/biblioteca_kuantum.Api/biblioteca_kuantum.Api.csproj" />
+    <Project Path="src/biblioteca_kuantum.BusinessLayer/biblioteca_kuantum.BusinessLayer.csproj" />
+    <Project Path="src/biblioteca_kuantum.DataAccessLayer/biblioteca_kuantum.DataAccessLayer.csproj" />
+  </Folder>
+</Solution>
