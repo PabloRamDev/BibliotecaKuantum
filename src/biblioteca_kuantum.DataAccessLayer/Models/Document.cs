@@ -22,5 +22,6 @@ namespace biblioteca_kuantum.DataAccessLayer.Models
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public DateTimeOffset DeletedAt { get; set; }
+        public ICollection<DocumentPageIndex>? DocumentPages { get; set; }
     }
 }
