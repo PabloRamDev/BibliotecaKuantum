@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.ComponentModel.DataAnnotations;
 
 namespace biblioteca_kuantum.DataAccessLayer.Models
@@ -23,5 +24,6 @@ namespace biblioteca_kuantum.DataAccessLayer.Models
         public DateTimeOffset UpdatedAt { get; set; }
         public DateTimeOffset DeletedAt { get; set; }
         public ICollection<DocumentPageIndex>? DocumentPages { get; set; }
+
     }
 }
