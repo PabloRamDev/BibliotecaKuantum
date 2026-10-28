@@ -11,7 +11,9 @@ namespace biblioteca_kuantum.BusinessLayer.Mappers
         public DocumentMappingProfiles()
         {
             CreateMap<Document, DocumentResponse>().ReverseMap();
+            CreateMap<Document, DocumentSearchResponse>().ReverseMap();
             CreateMap<Document, CreateDocument>().ReverseMap();
+            CreateMap<Document, UpdateDocument>().ReverseMap();
             CreateMap<DocumentPageIndex, DocumentPageIndexResponse>().ReverseMap();
             CreateMap(typeof(PagedResult<>), typeof(PagedResult<>));
         }
