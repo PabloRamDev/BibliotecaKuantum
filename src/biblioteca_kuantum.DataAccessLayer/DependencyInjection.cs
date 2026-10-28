@@ -16,6 +16,7 @@ namespace biblioteca_kuantum.DataAccessLayer
                 (options => 
                 options.UseNpgsql(connectionString)
                 .UseSnakeCaseNamingConvention()
+             
                 );
 
             return services;
