@@ -11,7 +11,7 @@ namespace biblioteca_kuantum.DataAccessLayer.Data
         }
 
         public DbSet<Document> Documents { get; set; }
-        public DbSet<DocumentPageIndex> PageIndices { get;set }
+        public DbSet<DocumentPageIndex> PageIndices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

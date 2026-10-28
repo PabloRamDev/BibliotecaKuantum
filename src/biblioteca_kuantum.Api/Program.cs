@@ -1,5 +1,10 @@
+using biblioteca_kuantum.DataAccessLayer;
+
 var builder = WebApplication.CreateBuilder(args);
 
+//Add DataAccessLayer
+
+builder.Services.AddDataAccessLayer(builder.Configuration);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
