@@ -1,5 +1,6 @@
 ﻿
 
+using biblioteca_kuantum.DataAccessLayer.Common;
 using biblioteca_kuantum.DataAccessLayer.Data;
 using biblioteca_kuantum.DataAccessLayer.Models;
 using biblioteca_kuantum.DataAccessLayer.RepositoryContracts;
@@ -23,7 +24,7 @@ namespace biblioteca_kuantum.DataAccessLayer.Repositories
                 return null;
             }
 
-            await _dbContext.Documents.AddAsync(document, ct);
+            _dbContext.Documents.Add(document, ct);
 
             await _dbContext.SaveChangesAsync();
 

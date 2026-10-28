@@ -1,39 +1,42 @@
-﻿using biblioteca_kuantum.DataAccessLayer.Common;
+﻿using biblioteca_kuantum.BusinessLayer.DTO;
+using biblioteca_kuantum.BusinessLayer.ServiceContracts;
+using biblioteca_kuantum.DataAccessLayer.Common;
 using biblioteca_kuantum.DataAccessLayer.Models;
-using biblioteca_kuantum.DataAccessLayer.RepositoryContracts;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace biblioteca_kuantum.BusinessLayer.Services
 {
-    public class DocumentService : IDocumentRepository
+    public class DocumentService : IDocumentService
     {
         public DocumentService()
         {
             
         }
-        public Task<Document?> CreateDocument(Document document, CancellationToken ct)
+
+        public Task<DocumentResponse?> CreateDocumentAsync(CreateDocument document, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteDocument(int id, CancellationToken ct)
+        public Task<bool> DeleteDocumentAsync(int id, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public Task<PagedResult<Document>> FindDocument(int? id, string? serialCode, string? publicationCode, string searchText, int pageNumber, int pageSize, CancellationToken ct)
+
+        public Task<PagedResult<DocumentResponse>> FindDocumentAsync(int? id, string? serialCode, string? publicationCode, string searchText, int pageNumber, int pageSize, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Document?> GetDocumentById(int id, CancellationToken ct)
+
+        public Task<DocumentResponse?> GetDocumentByIdAsync(int id, CancellationToken ct)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Document?> UpdateDocument(int id, Document document, CancellationToken ct)
+
+        public Task<DocumentResponse?> UpdateDocumentAsync(int id, UpdateDocument document, CancellationToken ct)
         {
             throw new NotImplementedException();
         }

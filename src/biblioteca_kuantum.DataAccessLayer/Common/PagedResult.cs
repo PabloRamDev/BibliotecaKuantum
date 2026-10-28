@@ -1,5 +1,4 @@
-﻿
-namespace biblioteca_kuantum.DataAccessLayer.Models
+﻿namespace biblioteca_kuantum.DataAccessLayer.Common
 {
     public class PagedResult<T>
     {
