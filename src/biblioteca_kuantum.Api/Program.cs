@@ -10,6 +10,10 @@ builder.Services.AddDataAccessLayer(builder.Configuration);
 //Add BusinessLayer
 
 builder.Services.AddBusinessLayer();
+
+//Add Controllers
+
+builder.Services.AddControllers();
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -29,6 +33,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+
+app.MapControllers();
 
 
 app.Run();

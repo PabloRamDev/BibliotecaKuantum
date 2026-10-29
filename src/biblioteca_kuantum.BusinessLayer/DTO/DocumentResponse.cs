@@ -16,8 +16,7 @@ namespace biblioteca_kuantum.BusinessLayer.DTO
         public string SerialCode { get; set; } = string.Empty;
         public string PublicationCode { get; set; } = string.Empty;
         public DateTimeOffset CreatedAt { get; set; }
-        public DateTimeOffset UpdatedAt { get; set; }
-        public DateTimeOffset DeletedAt { get; set; }
+        public DateTimeOffset? UpdatedAt { get; set; }
         public ICollection<DocumentPageIndexResponse>? DocumentPages { get; set; }
     }
 }

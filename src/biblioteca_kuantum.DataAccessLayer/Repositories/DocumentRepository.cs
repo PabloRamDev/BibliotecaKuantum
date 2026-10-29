@@ -88,7 +88,6 @@ namespace biblioteca_kuantum.DataAccessLayer.Repositories
                 .OrderBy(d => d.Id)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Where(x => x.DeletedAt == null)
                 .ToListAsync(ct);
 
             return new PagedResult<Document>
