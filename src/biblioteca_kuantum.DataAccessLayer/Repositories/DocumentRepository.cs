@@ -24,7 +24,7 @@ namespace biblioteca_kuantum.DataAccessLayer.Repositories
                 return null;
             }
 
-            _dbContext.Documents.Add(document, ct);
+            _dbContext.Documents.Add(document);
 
             await _dbContext.SaveChangesAsync();
 
