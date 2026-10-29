@@ -1,8 +1,5 @@
 ﻿using biblioteca_kuantum.BusinessLayer.DTO;
 using biblioteca_kuantum.DataAccessLayer.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace biblioteca_kuantum.BusinessLayer.ServiceContracts
 {

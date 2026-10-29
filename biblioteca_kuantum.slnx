@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="biblioteca_kuantum.BusinessLayer.Tests/biblioteca_kuantum.BusinessLayer.Tests.csproj" Id="14a90b97-a212-4624-92b6-f013a4ecad13" />
     <Project Path="src/biblioteca_kuantum.Api/biblioteca_kuantum.Api.csproj" />
     <Project Path="src/biblioteca_kuantum.BusinessLayer/biblioteca_kuantum.BusinessLayer.csproj" />
     <Project Path="src/biblioteca_kuantum.DataAccessLayer/biblioteca_kuantum.DataAccessLayer.csproj" />

@@ -38,7 +38,7 @@ namespace biblioteca_kuantum.DataAccessLayer.Repositories
 
             if (targetDocument == null)
             {
-                throw new ArgumentException("Document not found");
+                return false;
             }
 
             targetDocument.DeletedAt = DateTime.UtcNow;
@@ -88,6 +88,7 @@ namespace biblioteca_kuantum.DataAccessLayer.Repositories
                 .OrderBy(d => d.Id)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
+                .Where(x => x.DeletedAt == null)
                 .ToListAsync(ct);
 
             return new PagedResult<Document>
@@ -112,7 +113,7 @@ namespace biblioteca_kuantum.DataAccessLayer.Repositories
 
             if (targetDocument == null)
             {
-                throw new ArgumentException("Document not found");
+                return null;
             }
 
             //updated document should replace the Page Indices

@@ -13,9 +13,9 @@ CREATE TABLE documents (
     author_email character varying(100),
     serial_code character varying(16) NOT NULL,
     publication_code character varying(100) NOT NULL,
-    created_at timestamp with time zone NOT NULL,
-    updated_at timestamp with time zone NOT NULL,
-    deleted_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone NOT NULL DEFAULT (now()),
+    updated_at timestamp with time zone,
+    deleted_at timestamp with time zone,
     CONSTRAINT pk_documents PRIMARY KEY (id)
 );
 
@@ -24,7 +24,7 @@ CREATE TABLE page_indices (
     document_id integer NOT NULL,
     name character varying(100),
     page integer NOT NULL,
-    created_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone NOT NULL DEFAULT (now()),
     CONSTRAINT pk_page_indices PRIMARY KEY (id),
     CONSTRAINT fk_page_indices_documents_document_id FOREIGN KEY (document_id) REFERENCES documents (id) ON DELETE CASCADE
 );
@@ -32,7 +32,7 @@ CREATE TABLE page_indices (
 CREATE INDEX ix_page_indices_document_id ON page_indices (document_id);
 
 INSERT INTO "__EFMigrationsHistory" (migration_id, product_version)
-VALUES ('20261028122001_InitialCreate', '10.0.14');
+VALUES ('20261029145056_InitialCreate', '10.0.14');
 
 COMMIT;
 
