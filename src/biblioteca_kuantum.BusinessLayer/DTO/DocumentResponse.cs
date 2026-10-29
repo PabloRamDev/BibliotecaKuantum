@@ -18,6 +18,6 @@ namespace biblioteca_kuantum.BusinessLayer.DTO
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public DateTimeOffset DeletedAt { get; set; }
-        public ICollection<DocumentPageIndex>? DocumentPages { get; set; }
+        public ICollection<DocumentPageIndexResponse>? DocumentPages { get; set; }
     }
 }

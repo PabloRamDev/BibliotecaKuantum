@@ -17,9 +17,9 @@ namespace biblioteca_kuantum.BusinessLayer.DTO
         [MaxLength(100)]
         public string? AuthorEmail { get; set; }
         [MaxLength(16)]
-        public string SerialCode { get; set; } = string.Empty;
+        public string? SerialCode { get; set; }
         [MaxLength(100)]
-        public string PublicationCode { get; set; } = string.Empty;
-        public ICollection<DocumentPageIndex>? DocumentPages { get; set; }
+        public string? PublicationCode { get; set; }
+        public ICollection<CreateDocumentPageIndex>? DocumentPages { get; set; }
     }
 }

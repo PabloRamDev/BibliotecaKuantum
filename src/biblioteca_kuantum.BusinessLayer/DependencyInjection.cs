@@ -3,6 +3,7 @@ using biblioteca_kuantum.BusinessLayer.Validators;
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation;
 using biblioteca_kuantum.BusinessLayer.ServiceContracts;
+using biblioteca_kuantum.BusinessLayer.Services;
 
 namespace biblioteca_kuantum.BusinessLayer
 {
@@ -16,6 +17,7 @@ namespace biblioteca_kuantum.BusinessLayer
             services.AddValidatorsFromAssemblyContaining<CreateDocumentValidator>();
 
             services.AddScoped<IDocumentService, DocumentService>();
+
             return services;
         }
     }

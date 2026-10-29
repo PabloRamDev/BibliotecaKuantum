@@ -116,17 +116,20 @@ namespace biblioteca_kuantum.DataAccessLayer.Repositories
             }
 
             //updated document should replace the Page Indices
-            _dbContext.PageIndices.RemoveRange(targetDocument.DocumentPages!);
+            if(document.DocumentPages != null && document.DocumentPages.Count > 0)
+            {
+                _dbContext.PageIndices.RemoveRange(targetDocument.DocumentPages!);
+                targetDocument.DocumentPages = document.DocumentPages;
+            }
 
             DateTimeOffset oldCreatedAt = targetDocument.CreatedAt;
 
-            targetDocument.Name = document.Name;
-            targetDocument.Description = document.Description;
-            targetDocument.PublicationCode = document.PublicationCode;
-            targetDocument.SerialCode = document.SerialCode;
-            targetDocument.DocumentPages = document.DocumentPages;
-            targetDocument.AuthorFullName = document.AuthorFullName;
-            targetDocument.AuthorEmail = document.AuthorEmail;
+            targetDocument.Name = !String.IsNullOrEmpty(document.Name) ? document.Name : targetDocument.Name;
+            targetDocument.Description = !String.IsNullOrEmpty(document.Description) ? document.Description : targetDocument.Description;
+            targetDocument.PublicationCode = !String.IsNullOrEmpty(document.PublicationCode) ? document.PublicationCode : targetDocument.PublicationCode;
+            targetDocument.SerialCode = !String.IsNullOrEmpty(document.SerialCode) ? document.SerialCode : targetDocument.SerialCode;
+            targetDocument.AuthorFullName = !String.IsNullOrEmpty(document.AuthorFullName) ? document.AuthorFullName : targetDocument.AuthorFullName;
+            targetDocument.AuthorEmail = !String.IsNullOrEmpty(document.AuthorEmail) ? document.AuthorEmail : targetDocument.AuthorEmail;
             targetDocument.UpdatedAt = DateTime.UtcNow;
 
             await _dbContext.SaveChangesAsync(ct);
