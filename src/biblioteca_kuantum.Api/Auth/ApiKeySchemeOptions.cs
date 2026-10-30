@@ -2,7 +2,7 @@
 
 namespace biblioteca_kuantum.Api.Auth
 {
-    public class ApiKeySchemeHandler : AuthenticationSchemeOptions
+    public class ApiKeySchemeOptions : AuthenticationSchemeOptions
     {
         public const string Scheme = "ApiKeyScheme";
 

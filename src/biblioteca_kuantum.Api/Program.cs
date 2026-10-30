@@ -1,6 +1,7 @@
-using biblioteca_kuantum.DataAccessLayer;
-using biblioteca_kuantum.BusinessLayer;
 using biblioteca_kuantum.Api.Auth;
+using biblioteca_kuantum.Api.OpenApi;
+using biblioteca_kuantum.BusinessLayer;
+using biblioteca_kuantum.DataAccessLayer;
 using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,9 +17,9 @@ builder.Services.AddBusinessLayer();
 //Add Controllers
 
 builder.Services.AddControllers();
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+
+//Display the apikey configuration on OpenApi
+builder.Services.AddOpenApi(options => options.AddDocumentTransformer<ApiKeySecuritySchemeTransformer>());
 
 var apiKey = builder.Configuration[ApiKeySchemeOptions.ConfigurationKey];
 
@@ -48,6 +49,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/openapi/v1.json", "biblioteca kuantum v1");
+        options.EnablePersistAuthorization();
     });
 }
 
