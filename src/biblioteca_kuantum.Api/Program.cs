@@ -18,6 +18,10 @@ builder.Services.AddBusinessLayer();
 
 builder.Services.AddControllers();
 
+//Add Healthchecks
+builder.Services.AddHealthChecks();
+
+
 //Display the apikey configuration on OpenApi
 builder.Services.AddOpenApi(options => options.AddDocumentTransformer<ApiKeySecuritySchemeTransformer>());
 
@@ -52,6 +56,8 @@ if (app.Environment.IsDevelopment())
         options.EnablePersistAuthorization();
     });
 }
+//Map healthcheck endpoint
+app.MapHealthChecks("/healthz").AllowAnonymous();
 
 app.UseHttpsRedirection();
 

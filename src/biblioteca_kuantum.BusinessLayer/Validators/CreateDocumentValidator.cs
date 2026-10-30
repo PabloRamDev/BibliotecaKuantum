@@ -8,15 +8,15 @@ namespace biblioteca_kuantum.BusinessLayer.Validators
     {
         public CreateDocumentValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().MaximumLength(100).WithMessage("La longitud del Nombre no puede superar los 100 caracteres");
+            RuleFor(x => x.Name).NotEmpty().WithMessage("Nombre es obligatorio").MaximumLength(100).WithMessage("La longitud del Nombre no puede superar los 100 caracteres");
 
-            RuleFor(x => x.Description).NotEmpty().MaximumLength(1000).WithMessage("La longitud de la descripción no puede superar los 1000 caracteres");
+            RuleFor(x => x.Description).MaximumLength(1000).WithMessage("La longitud de la descripción no puede superar los 1000 caracteres");
 
-            RuleFor(x => x.AuthorFullName).NotEmpty().MaximumLength(300).WithMessage("La longitud del nombre completo del autor no puede superar los 300 caracteres");
+            RuleFor(x => x.AuthorFullName).NotEmpty().WithMessage("Nombre completo del autor es obligatorio").MaximumLength(300).WithMessage("La longitud del nombre completo del autor no puede superar los 300 caracteres");
 
-            RuleFor(x => x.AuthorEmail).NotEmpty().EmailAddress().WithMessage("La dirección de email debe ser válida").MaximumLength(100).WithMessage("La longitud del email no debe superar los 100 caracteres");
+            RuleFor(x => x.AuthorEmail).NotEmpty().WithMessage("Email es obligatorio").EmailAddress().WithMessage("La dirección de email debe ser válida").MaximumLength(100).WithMessage("La longitud del email no debe superar los 100 caracteres");
 
-            RuleFor(x => x.PublicationCode).NotEmpty().Must(BeValidCode).WithMessage("Formato ISO-<número> (ISO-27001), Ley N° <número> (Ley N° 19.628) ó P-XX.AAAAMMDD (P-01.20250614).");
+            RuleFor(x => x.PublicationCode).NotEmpty().WithMessage("Código de publicación es obligatorio").Must(BeValidCode).WithMessage("Formato ISO-<número> (ISO-27001), Ley N° <número> (Ley N° 19.628) ó P-XX.AAAAMMDD (P-01.20250614).");
 
             RuleFor(x => x.SerialCode)
             .NotEmpty().WithMessage("El código de serie es obligatorio.")

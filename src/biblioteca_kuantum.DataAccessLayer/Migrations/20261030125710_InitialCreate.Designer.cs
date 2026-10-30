@@ -12,7 +12,7 @@ using biblioteca_kuantum.DataAccessLayer.Data;
 namespace biblioteca_kuantum.DataAccessLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261029145056_InitialCreate")]
+    [Migration("20261030125710_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -35,11 +35,13 @@ namespace biblioteca_kuantum.DataAccessLayer.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AuthorEmail")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("author_email");
 
                     b.Property<string>("AuthorFullName")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("author_full_name");
 
@@ -59,6 +61,7 @@ namespace biblioteca_kuantum.DataAccessLayer.Migrations
                         .HasColumnName("description");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("name");
@@ -105,6 +108,7 @@ namespace biblioteca_kuantum.DataAccessLayer.Migrations
                         .HasColumnName("document_id");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("name");

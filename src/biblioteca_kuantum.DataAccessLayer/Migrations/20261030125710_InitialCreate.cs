@@ -18,10 +18,10 @@ namespace biblioteca_kuantum.DataAccessLayer.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    author_full_name = table.Column<string>(type: "text", nullable: true),
-                    author_email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    author_full_name = table.Column<string>(type: "text", nullable: false),
+                    author_email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     serial_code = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false),
                     publication_code = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()"),
@@ -40,7 +40,7 @@ namespace biblioteca_kuantum.DataAccessLayer.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     document_id = table.Column<int>(type: "integer", nullable: false),
-                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     page = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()")
                 },

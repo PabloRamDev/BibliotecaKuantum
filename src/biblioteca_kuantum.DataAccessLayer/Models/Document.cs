@@ -7,13 +7,13 @@ namespace biblioteca_kuantum.DataAccessLayer.Models
         [Key]
         public int Id { get; set; }
         [MaxLength(100)]
-        public string? Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         [MaxLength(1000)]
         public string? Description { get; set; }
-        public string? AuthorFullName { get; set; }
+        public string AuthorFullName { get; set; } = string.Empty;
         [EmailAddress]
         [MaxLength(100)]
-        public string? AuthorEmail { get; set; }
+        public string AuthorEmail { get; set; } = string.Empty;
         [MaxLength(16)]
         public string SerialCode { get; set; } = string.Empty;
         [MaxLength(100)]
