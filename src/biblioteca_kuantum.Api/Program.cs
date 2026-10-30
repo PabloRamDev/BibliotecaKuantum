@@ -45,15 +45,17 @@ builder.Services.AddAuthorizationBuilder()
 
 var app = builder.Build();
 
-//SwaggerUI left open for test
-app.MapOpenApi().AllowAnonymous();
-
-app.UseSwaggerUI(options =>
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    options.SwaggerEndpoint("/openapi/v1.json", "biblioteca kuantum v1");
-    options.EnablePersistAuthorization();
-});
+    app.MapOpenApi().AllowAnonymous();
 
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "biblioteca kuantum v1");
+        options.EnablePersistAuthorization();
+    });
+}
 //Map healthcheck endpoint
 app.MapHealthChecks("/healthz").AllowAnonymous();
 
