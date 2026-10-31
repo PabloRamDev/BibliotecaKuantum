@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\biblioteca_kuantum.BusinessLayer\biblioteca_kuantum.BusinessLayer.csproj" />
-    <ProjectReference Include="..\src\biblioteca_kuantum.DataAccessLayer\biblioteca_kuantum.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\biblioteca_kuantum.BusinessLayer\biblioteca_kuantum.BusinessLayer.csproj" />
+    <ProjectReference Include="..\biblioteca_kuantum.DataAccessLayer\biblioteca_kuantum.DataAccessLayer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

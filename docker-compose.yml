@@ -24,8 +24,7 @@ services:
       ConnectionStrings__PostgresConnection: "Host=db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
       Authentication__ApiKey: "${API_KEY}"
     ports:
-      - "8080:5045"
-      - "8081:7029"
+      - "8080:8080"
     depends_on:
       db:
         condition: service_healthy
