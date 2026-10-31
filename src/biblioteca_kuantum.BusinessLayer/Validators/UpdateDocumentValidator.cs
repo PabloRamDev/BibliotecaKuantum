@@ -15,7 +15,10 @@ namespace biblioteca_kuantum.BusinessLayer.Validators
 
             RuleFor(x => x.AuthorFullName).MaximumLength(300).WithMessage("La longitud del nombre completo del autor no puede superar los 300 caracteres");
 
-            RuleFor(x => x.AuthorEmail).EmailAddress().WithMessage("La dirección de email debe ser válida").MaximumLength(100).WithMessage("La longitud del email no debe superar los 100 caracteres");
+            //Custom rule, based on CreateDocumentValidator AuthorEmailRule
+            RuleFor(x => x.AuthorEmail)
+                .MaximumLength(100).WithMessage("La longitud del email no debe superar los 100 caracteres")
+                .Matches(@"^[^@\s]+@[^@\s]+\.[^@\s]{2,}$").WithMessage("La dirección de email debe ser válida");
 
             RuleFor(x => x.PublicationCode).Must(BeValidCode).WithMessage("Formato ISO-<número> (ISO-27001), Ley N° <número> (Ley N° 19.628) ó P-XX.AAAAMMDD (P-01.20250614).").When(x => !String.IsNullOrEmpty(x.PublicationCode));
 

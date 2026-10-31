@@ -1,4 +1,5 @@
 using biblioteca_kuantum.Api.Auth;
+using biblioteca_kuantum.Api.ErrorHandling;
 using biblioteca_kuantum.Api.OpenApi;
 using biblioteca_kuantum.BusinessLayer;
 using biblioteca_kuantum.DataAccessLayer;
@@ -18,9 +19,19 @@ builder.Services.AddBusinessLayer();
 
 builder.Services.AddControllers();
 
-builder.Services.AddProblemDetails();
+builder.Services.AddProblemDetails(options =>
+{
+    options.CustomizeProblemDetails = context =>
+    {
+        context.ProblemDetails.Instance =
+            $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
+        context.ProblemDetails.Extensions.TryAdd("traceId", context.HttpContext.TraceIdentifier);
+    };
+});
 
-//Add Healthchecks
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+//Add Health Check
 builder.Services.AddHealthChecks();
 
 
@@ -54,8 +65,6 @@ app.UseStatusCodePages();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi().AllowAnonymous();
-    
-    app.UseDeveloperExceptionPage();
 
     app.UseSwaggerUI(options =>
     {
@@ -63,7 +72,7 @@ if (app.Environment.IsDevelopment())
         options.EnablePersistAuthorization();
     });
 }
-//Map healthcheck endpoint
+//Map health check endpoint
 app.MapHealthChecks("/healthz").AllowAnonymous();
 
 app.UseHttpsRedirection();

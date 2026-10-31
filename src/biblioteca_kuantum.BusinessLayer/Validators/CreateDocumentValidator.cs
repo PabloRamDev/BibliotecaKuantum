@@ -14,6 +14,7 @@ namespace biblioteca_kuantum.BusinessLayer.Validators
 
             RuleFor(x => x.AuthorFullName).NotEmpty().WithMessage("Nombre completo del autor es obligatorio").MaximumLength(300).WithMessage("La longitud del nombre completo del autor no puede superar los 300 caracteres");
 
+            //Custom rule made with Claude
             RuleFor(x => x.AuthorEmail)
                 .NotEmpty().WithMessage("Email es obligatorio")
                 .MaximumLength(100).WithMessage("La longitud del email no debe superar los 100 caracteres")

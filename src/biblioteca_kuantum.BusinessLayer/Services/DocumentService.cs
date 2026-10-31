@@ -26,11 +26,9 @@ namespace biblioteca_kuantum.BusinessLayer.Services
 
         public async Task<DocumentResponse?> CreateDocumentAsync(CreateDocument document, CancellationToken ct)
         {
-            ValidationResult validationResult = await  _createDocumentValidator.ValidateAsync(document, ct);
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
+            
+            await  _createDocumentValidator.ValidateAndThrowAsync(document, ct);
+     
 
             Document documentModel = _mapper.Map<Document>(document);
 
@@ -62,12 +60,8 @@ namespace biblioteca_kuantum.BusinessLayer.Services
 
         public async Task<DocumentResponse?> UpdateDocumentAsync(int id, UpdateDocument document, CancellationToken ct = default)
         {
-            ValidationResult validationResult = await _updateDocumentValidator.ValidateAsync(document, ct);
+          await _updateDocumentValidator.ValidateAndThrowAsync(document, ct);
 
-            if(!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
             Document updateDocument = _mapper.Map<Document>(document);
 
             var documentModel = await _documentRepository.UpdateDocument(id, updateDocument, ct);
