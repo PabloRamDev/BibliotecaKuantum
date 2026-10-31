@@ -97,6 +97,21 @@ namespace biblioteca_kuantum.BusinessLayer.Tests.Services
             Assert.Equal("ABCDEF0123456789", result.SerialCode);
             Assert.Equal("ISO-14001", result.PublicationCode);
         }
+        
+        [Fact]
+        public async Task CreateDocumentAsync_WithInvalidEmail_ThrowsValidationError()
+        {
+            CreateDocument request = ValidCreateRequest();
+            request.AuthorEmail = "invalidemail@email";
+
+            var exception = await Assert.ThrowsAsync<ValidationException>(
+                () => _service.CreateDocumentAsync(request, Ct));
+
+            Assert.Contains(exception.Errors,
+                e => e.PropertyName == nameof(CreateDocument.AuthorEmail));
+
+        }
+
 
         [Fact]
         public async Task CreateDocumentAsync_ValidRequest_PersistsDocumentWithPages()

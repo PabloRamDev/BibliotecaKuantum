@@ -18,6 +18,8 @@ builder.Services.AddBusinessLayer();
 
 builder.Services.AddControllers();
 
+builder.Services.AddProblemDetails();
+
 //Add Healthchecks
 builder.Services.AddHealthChecks();
 
@@ -45,10 +47,15 @@ builder.Services.AddAuthorizationBuilder()
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
+app.UseStatusCodePages();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi().AllowAnonymous();
+    
+    app.UseDeveloperExceptionPage();
 
     app.UseSwaggerUI(options =>
     {
