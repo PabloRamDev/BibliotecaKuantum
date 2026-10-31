@@ -1,24 +1,104 @@
 {
   "openapi": "3.1.1",
   "info": {
-    "title": "biblioteca_kuantum.Api | v1",
-    "version": "1.0.0"
+    "title": "Biblioteca Kuantum API",
+    "description": "API REST de Biblioteca Kuantum, (prueba técnica octubre 2026) por Pablo Ramírez. \nProporciona endpoints para crear, obtener, actualizar y eliminar documentos, \nademás de un endpoint de búsqueda dedicado para consultar el catálogo de documentos.\n\nPermite:\n- Registrar documentos con su índice de páginas.\n- Consultar un documento por su identificador.\n- Buscar documentos por código de serie, código de publicación o texto libre, con resultados paginados.\n- Actualizar y eliminar documentos existentes.\n\nPrimeros pasos\n 1. Agregar la variable apiKey con una API key registrada en el archivo .ENV en el botón Authorize.\n 3. Se puede probar cada endpoint. Se incluye ejemplos guardados que muestran respuestas exitosas y de error.",
+    "contact": {
+      "name": "Pablo Ramírez",
+      "email": "pabloram.dev@gmail.com"
+    },
+    "version": "v1"
   },
   "servers": [
     {
-      "url": "http://localhost:5045/"
+      "url": "http://localhost:8080/"
     }
   ],
   "paths": {
+    "/api/Documents": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Crear documento",
+        "description": "Registra un nuevo documento en la biblioteca y devuelve el documento creado con su identificador asignado. La cabecera Location apunta al recurso creado (GET api/Documents/{id}).",
+        "requestBody": {
+          "description": "Datos del documento a crear.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDocument"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDocument"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDocument"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Documento creado correctamente. Devuelve el documento con su Id.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Los datos enviados no son válidos o el documento no pudo crearse.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Documents/{id}": {
       "get": {
         "tags": [
           "Documents"
         ],
+        "summary": "Obtener documento por Id",
+        "description": "Devuelve un único documento a partir de su identificador numérico.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "Identificador numérico del documento.",
             "required": true,
             "schema": {
               "pattern": "^-?(?:0|[1-9]\\d*)$",
@@ -29,7 +109,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Documento encontrado.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -49,7 +129,7 @@
             }
           },
           "404": {
-            "description": "Not Found",
+            "description": "No existe un documento con el Id indicado.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -74,10 +154,13 @@
         "tags": [
           "Documents"
         ],
+        "summary": "Actualizar documento",
+        "description": "Actualiza los datos de un documento existente y devuelve el documento actualizado.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "Identificador numérico del documento a actualizar.",
             "required": true,
             "schema": {
               "pattern": "^-?(?:0|[1-9]\\d*)$",
@@ -87,6 +170,7 @@
           }
         ],
         "requestBody": {
+          "description": "Nuevos datos del documento.",
           "content": {
             "application/json": {
               "schema": {
@@ -108,7 +192,7 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Documento actualizado correctamente.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -128,7 +212,7 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Los datos enviados no son válidos o el documento no existe.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -153,10 +237,13 @@
         "tags": [
           "Documents"
         ],
+        "summary": "Eliminar documento",
+        "description": "Elimina un documento de la biblioteca a partir de su identificador.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "Identificador numérico del documento a eliminar.",
             "required": true,
             "schema": {
               "pattern": "^-?(?:0|[1-9]\\d*)$",
@@ -167,7 +254,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Documento eliminado correctamente.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -187,7 +274,7 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "El documento no pudo eliminarse (por ejemplo, porque no existe).",
             "content": {
               "text/plain": {
                 "schema": {
@@ -214,10 +301,13 @@
         "tags": [
           "Documents"
         ],
+        "summary": "Buscar documentos",
+        "description": "Busca documentos aplicando filtros opcionales y devuelve los resultados paginados. Todos los filtros son opcionales y se pueden combinar; si no se envía ninguno, se devuelven todos los documentos de forma paginada.",
         "parameters": [
           {
             "name": "id",
             "in": "query",
+            "description": "Filtra por identificador exacto del documento.",
             "schema": {
               "pattern": "^-?(?:0|[1-9]\\d*)$",
               "type": [
@@ -230,6 +320,7 @@
           {
             "name": "serialCode",
             "in": "query",
+            "description": "Filtra por código de serie del documento.",
             "schema": {
               "type": "string"
             }
@@ -237,6 +328,7 @@
           {
             "name": "publicationCode",
             "in": "query",
+            "description": "Filtra por código de publicación del documento.",
             "schema": {
               "type": "string"
             }
@@ -244,6 +336,7 @@
           {
             "name": "searchText",
             "in": "query",
+            "description": "Texto libre para buscar coincidencias en los datos del documento.",
             "schema": {
               "type": "string"
             }
@@ -251,6 +344,7 @@
           {
             "name": "pageNumber",
             "in": "query",
+            "description": "Número de página a devolver, comenzando en 1. Valor por defecto: 1.",
             "schema": {
               "pattern": "^-?(?:0|[1-9]\\d*)$",
               "type": [
@@ -264,6 +358,7 @@
           {
             "name": "pageSize",
             "in": "query",
+            "description": "Cantidad de documentos por página. Valor por defecto: 10.",
             "schema": {
               "pattern": "^-?(?:0|[1-9]\\d*)$",
               "type": [
@@ -277,7 +372,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Resultado paginado con los documentos que cumplen los filtros.",
             "content": {
               "text/plain": {
                 "schema": {
@@ -292,78 +387,12 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PagedResultOfDocumentResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Documents": {
-      "post": {
-        "tags": [
-          "Documents"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateDocument"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateDocument"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateDocument"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentResponse"
                 }
               }
             }
           },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
+          "404": {
+            "description": "La búsqueda no pudo realizarse o no devolvió resultados."
           }
         }
       }
@@ -379,46 +408,60 @@
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Nombre o título del documento.",
+            "example": "Introducción a la computación cuántica"
           },
           "description": {
             "maxLength": 1000,
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Descripción o resumen del contenido del documento.",
+            "example": "Texto introductorio sobre qubits, superposición y entrelazamiento."
           },
           "authorFullName": {
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Nombre completo del autor del documento.",
+            "example": "María González"
           },
           "authorEmail": {
             "maxLength": 100,
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Correo electrónico de contacto del autor.",
+            "format": "email",
+            "example": "maria.gonzalez@example.com"
           },
           "serialCode": {
             "maxLength": 16,
-            "type": "string"
+            "minLength": 1,
+            "type": "string",
+            "description": "Código de serie único del documento.",
+            "example": "SN-2026-000123"
           },
           "publicationCode": {
             "maxLength": 100,
-            "type": "string"
+            "minLength": 1,
+            "type": "string",
+            "description": "Código de publicación del documento.",
+            "example": "PUB-2026-0042"
           },
           "documentPages": {
-            "type": [
-              "null",
-              "array"
-            ],
+            "type": "array",
             "items": {
               "$ref": "#/components/schemas/CreateDocumentPageIndex"
-            }
+            },
+            "description": "Índice de páginas del documento. Se require agregar una página o más"
           }
-        }
+        },
+        "description": "Datos necesarios para registrar un nuevo documento en la biblioteca."
       },
       "CreateDocumentPageIndex": {
         "type": "object",
@@ -427,100 +470,128 @@
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Nombre de la entrada del índice (capítulo, sección, etc.).",
+            "example": "Capítulo 1: Qubits"
           },
           "page": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
-            "format": "int32"
+            "minimum": 1,
+            "type": "integer",
+            "description": "Número de página donde comienza la entrada.",
+            "format": "int32",
+            "example": 1
           }
-        }
+        },
+        "description": "Entrada del índice de páginas de un documento (al crear o actualizar)."
       },
       "DocumentPageIndexResponse": {
         "type": "object",
         "properties": {
           "id": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
-            "format": "int32"
+            "minimum": 1,
+            "type": "integer",
+            "description": "Identificador único de la entrada del índice.",
+            "format": "int32",
+            "example": 1
           },
           "name": {
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Nombre de la entrada del índice (capítulo, sección, etc.).",
+            "example": "Capítulo 1: Qubits"
           },
           "page": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
-            "format": "int32"
+            "minimum": 1,
+            "type": "integer",
+            "description": "Número de página donde comienza la entrada.",
+            "format": "int32",
+            "example": 1
           },
           "createdAt": {
             "type": "string",
-            "format": "date-time"
+            "description": "Fecha y hora de creación del registro (ISO 8601 con zona horaria).",
+            "format": "date-time",
+            "example": "2026-10-31T18:00:00-03:00"
           }
-        }
+        },
+        "description": "Entrada registrada del índice de páginas de un documento."
       },
       "DocumentResponse": {
         "type": "object",
         "properties": {
           "id": {
-            "pattern": "^-?(?:0|[1-9]\\d*)$",
-            "type": [
-              "integer",
-              "string"
-            ],
-            "format": "int32"
+            "minimum": 1,
+            "type": "integer",
+            "description": "Identificador único del documento.",
+            "format": "int32",
+            "example": 1
           },
           "name": {
+            "maxLength": 100,
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Nombre o título del documento.",
+            "example": "Introducción a la computación cuántica"
           },
           "description": {
+            "maxLength": 1000,
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Descripción o resumen del contenido del documento.",
+            "example": "Texto introductorio sobre qubits, superposición y entrelazamiento."
           },
           "authorFullName": {
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Nombre completo del autor del documento.",
+            "example": "María González"
           },
           "authorEmail": {
+            "maxLength": 100,
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Correo electrónico de contacto del autor.",
+            "format": "email",
+            "example": "maria.gonzalez@example.com"
           },
           "serialCode": {
-            "type": "string"
+            "maxLength": 16,
+            "minLength": 1,
+            "type": "string",
+            "description": "Código de serie único del documento.",
+            "example": "SN-2026-000123"
           },
           "publicationCode": {
-            "type": "string"
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string",
+            "description": "Código de publicación del documento.",
+            "example": "PUB-2026-0042"
           },
           "createdAt": {
             "type": "string",
-            "format": "date-time"
+            "description": "Fecha y hora de creación del registro (ISO 8601 con zona horaria).",
+            "format": "date-time",
+            "example": "2026-10-31T18:00:00-03:00"
           },
           "updatedAt": {
             "type": [
               "null",
               "string"
             ],
-            "format": "date-time"
+            "description": "Fecha y hora de la última actualización (ISO 8601 con zona horaria). Es nulo si el documento nunca se ha modificado.",
+            "format": "date-time",
+            "example": "2026-10-31T18:00:00-03:00"
           },
           "documentPages": {
             "type": [
@@ -529,9 +600,11 @@
             ],
             "items": {
               "$ref": "#/components/schemas/DocumentPageIndexResponse"
-            }
+            },
+            "description": "Índice de páginas del documento."
           }
-        }
+        },
+        "description": "Documento de la biblioteca con su índice de páginas."
       },
       "PagedResultOfDocumentResponse": {
         "type": "object",
@@ -614,41 +687,54 @@
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Nombre o título del documento.",
+            "example": "Introducción a la computación cuántica"
           },
           "description": {
             "maxLength": 1000,
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Descripción o resumen del contenido del documento.",
+            "example": "Texto introductorio sobre qubits, superposición y entrelazamiento."
           },
           "authorFullName": {
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Nombre completo del autor del documento.",
+            "example": "María González"
           },
           "authorEmail": {
             "maxLength": 100,
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Correo electrónico de contacto del autor.",
+            "format": "email",
+            "example": "maria.gonzalez@example.com"
           },
           "serialCode": {
             "maxLength": 16,
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Código de serie único del documento.",
+            "example": "SN-2026-000123"
           },
           "publicationCode": {
             "maxLength": 100,
             "type": [
               "null",
               "string"
-            ]
+            ],
+            "description": "Código de publicación del documento.",
+            "example": "PUB-2026-0042"
           },
           "documentPages": {
             "type": [
@@ -657,9 +743,11 @@
             ],
             "items": {
               "$ref": "#/components/schemas/CreateDocumentPageIndex"
-            }
+            },
+            "description": "Índice de páginas del documento."
           }
-        }
+        },
+        "description": "Datos para actualizar un documento existente."
       }
     },
     "securitySchemes": {
@@ -678,7 +766,8 @@
   ],
   "tags": [
     {
-      "name": "Documents"
+      "name": "Documents",
+      "description": "Gestión de documentos de la biblioteca: alta, consulta, búsqueda paginada, actualización y eliminación."
     }
   ]
 }
