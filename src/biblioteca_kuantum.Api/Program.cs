@@ -40,6 +40,8 @@ builder.Services.AddOpenApi(
     options => 
         options.AddDocumentTransformer<ApiKeySecuritySchemeTransformer>()
             .AddOperationTransformer<OperationDetailsTransformer>()
+            .AddSchemaTransformer<SchemaDetailsTransformer>()
+            .AddDocumentTransformer<DocumentInfoTransformer>()
     
     );
 

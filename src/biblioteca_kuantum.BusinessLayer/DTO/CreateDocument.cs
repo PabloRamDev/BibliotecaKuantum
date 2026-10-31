@@ -20,6 +20,6 @@ namespace biblioteca_kuantum.BusinessLayer.DTO
         public string SerialCode { get; set; } = string.Empty;
         [MaxLength(100)]
         public string PublicationCode { get; set; } = string.Empty;
-        public ICollection<CreateDocumentPageIndex>? DocumentPages { get; set; }
+        public ICollection<CreateDocumentPageIndex> DocumentPages { get; init; } = new List<CreateDocumentPageIndex>();
     }
 }
