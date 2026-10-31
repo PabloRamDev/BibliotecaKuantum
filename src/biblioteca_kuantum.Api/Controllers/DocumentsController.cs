@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace biblioteca_kuantum.Api.Controllers
 {
+    /// <summary>
+    /// Biblioteca Kuantum API - Pablo Ramírez.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class DocumentsController : ControllerBase
@@ -13,6 +16,20 @@ namespace biblioteca_kuantum.Api.Controllers
         public DocumentsController(IDocumentService documentService)
         {
             _documentService = documentService;
+        }
+        [HttpPost]
+        [ProducesResponseType<DocumentResponse>(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateDocument([FromBody] CreateDocument document, CancellationToken ct)
+        {
+            DocumentResponse? response = await _documentService.CreateDocumentAsync(document, ct);
+
+            if(response == null)
+            {
+                return BadRequest();
+            }
+
+            return CreatedAtAction(nameof(GetDocumentById), new { id = response.Id }, response);
         }
 
         [HttpGet("{id:int}")]
@@ -45,22 +62,6 @@ namespace biblioteca_kuantum.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
-        [ProducesResponseType<DocumentResponse>(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateDocument([FromBody] CreateDocument document, CancellationToken ct)
-        {
-            DocumentResponse? response = await _documentService.CreateDocumentAsync(document, ct);
-
-            if(response == null)
-            {
-                return BadRequest();
-            }
-
-            return CreatedAtAction(nameof(GetDocumentById), new { id = response.Id }, response);
-
-        }
-
         [HttpPut("{id:int}")]
         [ProducesResponseType<DocumentResponse>(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -90,8 +91,6 @@ namespace biblioteca_kuantum.Api.Controllers
             }
 
             return Ok(response);
-
         }
-
     }
 }

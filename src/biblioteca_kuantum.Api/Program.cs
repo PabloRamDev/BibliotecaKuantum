@@ -36,7 +36,12 @@ builder.Services.AddHealthChecks();
 
 
 //Display the apikey configuration on OpenApi
-builder.Services.AddOpenApi(options => options.AddDocumentTransformer<ApiKeySecuritySchemeTransformer>());
+builder.Services.AddOpenApi(
+    options => 
+        options.AddDocumentTransformer<ApiKeySecuritySchemeTransformer>()
+            .AddOperationTransformer<OperationDetailsTransformer>()
+    
+    );
 
 var apiKey = builder.Configuration[ApiKeySchemeOptions.ConfigurationKey];
 

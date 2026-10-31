@@ -7,6 +7,9 @@
     <UserSecretsId>89474ed1-d03c-47b0-8f75-f41fc41dedfc</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  <!-- Avoids warnings for every public member without a comment -->
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,5 +26,6 @@
     <ProjectReference Include="..\biblioteca_kuantum.BusinessLayer\biblioteca_kuantum.BusinessLayer.csproj" />
     <ProjectReference Include="..\biblioteca_kuantum.DataAccessLayer\biblioteca_kuantum.DataAccessLayer.csproj" />
   </ItemGroup>
+
 
 </Project>
