@@ -15,6 +15,37 @@
     }
   ],
   "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Estado de la API",
+        "description": "Devuelve \"Ok\" si la API y sus dependencias están funcionando.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Documents": {
       "post": {
         "tags": [
@@ -765,6 +796,9 @@
     }
   ],
   "tags": [
+    {
+      "name": "Health"
+    },
     {
       "name": "Documents",
       "description": "Gestión de documentos de la biblioteca: alta, consulta, búsqueda paginada, actualización y eliminación."
