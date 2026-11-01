@@ -4,6 +4,8 @@ using biblioteca_kuantum.Api.OpenApi;
 using biblioteca_kuantum.BusinessLayer;
 using biblioteca_kuantum.DataAccessLayer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,7 +81,20 @@ if (app.Environment.IsDevelopment())
     });
 }
 //Map health check endpoint
-app.MapHealthChecks("/healthz").AllowAnonymous();
+app.MapGet("/health", async (HealthCheckService healthChecks, CancellationToken ct) =>
+    {
+        var report = await healthChecks.CheckHealthAsync(ct);
+
+        return report.Status == HealthStatus.Unhealthy
+            ? Results.Text("Unhealthy", statusCode: StatusCodes.Status503ServiceUnavailable)
+            : Results.Text(report.Status == HealthStatus.Healthy ? "Ok" : "Degraded");
+    })
+    .WithTags("Health")
+    .WithSummary("Estado de la API")
+    .WithDescription("Devuelve \"Ok\" si la API y sus dependencias están funcionando.")
+    .Produces<string>(StatusCodes.Status200OK, "text/plain")
+    .Produces<string>(StatusCodes.Status503ServiceUnavailable, "text/plain")
+    .AllowAnonymous();
 
 app.UseHttpsRedirection();
 
