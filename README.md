@@ -1,8 +1,8 @@
-# biblioteca_kuantum.Api
+# Prueba Técnica de Postulación Kuantum - Pablo Ramírez
 
-API REST para la gestión de documentos de Biblioteca Kuantum, desarrollada como parte de la prueba técnica del proceso de postulación de octubre de 2026.
+Desarrollo de API REST para la gestión de documentos (Biblioteca Kuantum), como parte de la prueba técnica del proceso de postulación de octubre de 2026 (/docs/prueba-tecnica.pdf/)
 
-La API permite crear, consultar, buscar, actualizar y eliminar documentos, cada uno con su índice de páginas asociado.
+La API permite crear, consultar, buscar, actualizar y eliminar documentos, cada uno con su índice de páginas asociado, según los requerimientos especificados.
 
 ---
 
@@ -19,6 +19,7 @@ La API permite crear, consultar, buscar, actualizar y eliminar documentos, cada 
 - [Base de datos](#base-de-datos)
 - [Pruebas](#pruebas)
 - [Supuestos y decisiones de diseño](#supuestos-y-decisiones-de-diseño)
+- [Uso de AI](#uso-de-ai)
 
 ---
 
@@ -77,7 +78,7 @@ biblioteca_kuantum/
 
 ```bash
 git clone <url-del-repositorio>
-cd biblioteca_kuantum
+cd BibliotecaKuantum
 ```
 
 ### 2. Configurar las variables de entorno
@@ -92,14 +93,12 @@ cp .env.example .env
 Copy-Item .env.example .env
 ```
 
-Luego edita `.env` y reemplaza los valores de ejemplo por los tuyos. Docker Compose lee este archivo automáticamente al iniciar.
-
-> El archivo `.env` está excluido del repositorio (`.gitignore`) porque contiene credenciales. Solo se versiona `.env.example`.
+Luego edita `.env` y reemplaza los valores de ejemplo. Docker Compose lee este archivo automáticamente al iniciar.
 
 ### 3. Levantar los contenedores
 
 ```bash
-docker compose up --build
+docker compose up -d
 ```
 
 Al iniciar:
@@ -119,17 +118,6 @@ Para detener los contenedores y **eliminar los datos** (la próxima ejecución v
 docker compose down -v
 ```
 
----
-
-## Ejecución local (desarrollo)
-
-**Requisitos:** .NET 10 SDK y una instancia de PostgreSQL (puede ser la del contenedor: `docker compose up db`).
-
-1. Abrir la solución en Visual Studio y establecer `biblioteca_kuantum.Api` como proyecto de inicio.
-2. Verificar la cadena de conexión en `appsettings.Development.json` (`Host=localhost;Port=5432;...`).
-3. Ejecutar el proyecto. La API queda disponible en `https://localhost:7029` y Swagger en `https://localhost:7029/swagger`.
-
----
 
 ## Autenticación
 
@@ -138,16 +126,6 @@ La API utiliza una clave enviada en el encabezado `X-Api-Key` de cada solicitud.
 ```http
 X-Api-Key: <tu-clave>
 ```
-
-En la colección de Postman incluida, configura las variables de colección:
-
-| Variable | Valor |
-|---|---|
-| `baseUrl` | `http://localhost:8080` (Docker) o `https://localhost:7029` (local) |
-| `apiKey` | Clave de API válida |
-
-La carpeta **Documents** de la colección contiene una solicitud por endpoint, con ejemplos guardados de respuestas exitosas y de error.
-
 ---
 
 ## Endpoints
@@ -161,6 +139,10 @@ Ruta base: `/api/Documents`
 | `GET` | `/api/Documents/search` | Busca documentos con filtros y paginación. | `200 OK`, `400 Bad Request` |
 | `PUT` | `/api/Documents/{id}` | Actualiza los datos de un documento. | `200 OK`, `400 Bad Request`, `404 Not Found` |
 | `DELETE` | `/api/Documents/{id}` | Elimina un documento (eliminación lógica). | `200 OK`, `404 Not Found` |
+
+Ruta de Health Check: /healthz
+
+Se utiliza la funcionalidad incorporada de IHealthCheckBuilder, para ahorrar complejidad de implementar una solución propia. se permite revisar sin autenticación.
 
 ### Crear un documento
 
@@ -262,7 +244,7 @@ Ejemplo de error de validación:
   "title": "One or more validation errors occurred.",
   "status": 400,
   "errors": {
-    "PublicationCode": ["Must be ISO-<number>, Ley N° <number> or P-XX.AAAAMMDD."]
+    "PublicationCode": ["ISO-<number>, Ley N° <number> or P-XX.AAAAMMDD."]
   },
   "traceId": "00-..."
 }
@@ -308,3 +290,21 @@ La prueba de búsqueda por texto (`searchText`) está marcada como omitida: util
 - **Eliminación lógica:** los documentos eliminados se conservan para trazabilidad; sus páginas se eliminan físicamente, ya que no tienen sentido sin el documento.
 - **"No encontrado" no es una excepción:** los servicios devuelven `null` o `false` y el controlador responde `404`. Las excepciones se reservan para datos inválidos y errores inesperados.
 - **Prioridad de filtros en la búsqueda:** los filtros no se combinan; se aplica el más específico enviado (`id` > `serialCode` > `publicationCode` > `searchText`).
+
+---
+
+## Uso de AI
+
+El uso de AI como apoyo para el desarrollo de la solución fue principalmente con el servicio [Claude de Anthropic](https://claude.ai), en su modalidad Chat y no de Agente vía Claude Code.
+
+los principales usos de Claude fue en apoyar la creación de pruebas unitarias, validaciones (regex), error handling y la configuración de Open API:
+
+### Fluent Validations Regex
+![alt text](/docs/image.png)
+![alt text](/docs/image-1.png)
+### Unit tests
+![alt text](/docs/image-7.png)
+### Exception Handler
+![alt text](/docs/image-6.png)
+### Open API Transformers
+![alt text](/docs/image-8.png)
