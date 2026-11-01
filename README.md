@@ -130,6 +130,7 @@ X-Api-Key: <tu-clave>
 
 ## Endpoints
 
+
 Ruta base: `/api/Documents`
 
 | Método | Ruta | Descripción | Respuestas |
@@ -140,9 +141,13 @@ Ruta base: `/api/Documents`
 | `PUT` | `/api/Documents/{id}` | Actualiza los datos de un documento. | `200 OK`, `400 Bad Request`, `404 Not Found` |
 | `DELETE` | `/api/Documents/{id}` | Elimina un documento (eliminación lógica). | `200 OK`, `404 Not Found` |
 
-Ruta de Health Check: /healthz
+Ruta de Health Check: `/health` - Sin Autenticación
 
-Se utiliza la funcionalidad incorporada de IHealthCheckBuilder, para ahorrar complejidad de implementar una solución propia. se permite revisar sin autenticación.
+| Método | Ruta | Descripción | Respuestas |
+|---|---|---|---|
+| `GET` | `/health` | Entrega el estado (health) de la API. | `200 OK`, `503 Service Unavailable` |
+
+Se utiliza la funcionalidad incorporada de IHealthCheckBuilder, para ahorrar complejidad de implementar una solución propia. se implementa mediante un endpoint creado con Minimal Api Endpoints y es mapeado a OpenAPI. se permite revisar sin autenticación.
 
 ### Crear un documento
 
