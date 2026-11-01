@@ -24,7 +24,7 @@ namespace biblioteca_kuantum.Api.Controllers
         {
             DocumentResponse? response = await _documentService.CreateDocumentAsync(document, ct);
 
-            if(response == null)
+            if (response == null)
             {
                 return BadRequest();
             }
@@ -40,7 +40,7 @@ namespace biblioteca_kuantum.Api.Controllers
         {
             DocumentResponse? response = await _documentService.GetDocumentByIdAsync(id, ct);
 
-            if(response == null)
+            if (response == null)
             {
                 return NotFound();
             }
@@ -52,7 +52,7 @@ namespace biblioteca_kuantum.Api.Controllers
         [ProducesResponseType<PagedResult<DocumentResponse>>(StatusCodes.Status200OK)]
         public async Task<IActionResult> SearchDocument([FromQuery] int? id, [FromQuery] string? serialCode, [FromQuery] string? publicationCode, [FromQuery] string? searchText, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, CancellationToken ct = default)
         {
-            PagedResult<DocumentResponse>? response = await _documentService.FindDocumentAsync( id, serialCode, publicationCode, searchText, pageNumber, pageSize, ct);
+            PagedResult<DocumentResponse>? response = await _documentService.FindDocumentAsync(id, serialCode, publicationCode, searchText, pageNumber, pageSize, ct);
 
             if (response == null)
             {
@@ -67,7 +67,7 @@ namespace biblioteca_kuantum.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateDocument(int id, [FromBody] UpdateDocument document, CancellationToken ct)
         {
-            DocumentResponse? response = await _documentService.UpdateDocumentAsync(id,document, ct);
+            DocumentResponse? response = await _documentService.UpdateDocumentAsync(id, document, ct);
 
             if (response == null)
             {

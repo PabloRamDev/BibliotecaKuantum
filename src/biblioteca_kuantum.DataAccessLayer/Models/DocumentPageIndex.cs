@@ -12,7 +12,7 @@ namespace biblioteca_kuantum.DataAccessLayer.Models
         public int DocumentId { get; set; }
         [MaxLength(100)]
         public string Name { get; set; } = string.Empty;
-        public int Page {  get; set; }
+        public int Page { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public virtual Document? Document { get; set; }
     }

@@ -15,7 +15,7 @@ public sealed class GlobalExceptionHandler(
         var problemDetails = exception switch
         {
             ValidationException validation => CreateValidationProblem(validation),
-            
+
             _ => Create(StatusCodes.Status500InternalServerError,
                 "Error interno del servidor",
                 "Ocurrió un error inesperado. Intente nuevamente más tarde.")

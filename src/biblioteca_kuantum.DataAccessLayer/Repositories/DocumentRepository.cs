@@ -19,7 +19,7 @@ namespace biblioteca_kuantum.DataAccessLayer.Repositories
         }
         public async Task<Document?> CreateDocument(Document document, CancellationToken ct = default)
         {
-            if (document == null) 
+            if (document == null)
             {
                 return null;
             }
@@ -116,7 +116,7 @@ namespace biblioteca_kuantum.DataAccessLayer.Repositories
             }
 
             //updated document should replace the Page Indices
-            if(document.DocumentPages != null && document.DocumentPages.Count > 0)
+            if (document.DocumentPages != null && document.DocumentPages.Count > 0)
             {
                 _dbContext.PageIndices.RemoveRange(targetDocument.DocumentPages!);
                 targetDocument.DocumentPages = document.DocumentPages;

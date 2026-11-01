@@ -20,7 +20,7 @@ namespace biblioteca_kuantum.BusinessLayer.Tests.Helpers
             }
 
             return dbContext;
-                
+
         }
 
         private static DateTimeOffset Utc(int y, int m, int d) =>

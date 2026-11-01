@@ -47,6 +47,6 @@ namespace biblioteca_kuantum.BusinessLayer.Validators
             DocumentCodePatterns.Iso().IsMatch(code)
             || DocumentCodePatterns.Ley().IsMatch(code)
             || (DocumentCodePatterns.Prefix().IsMatch(code) && DocumentCodePatterns.HasValidPrefixDate(code));
-    
+
     }
 }

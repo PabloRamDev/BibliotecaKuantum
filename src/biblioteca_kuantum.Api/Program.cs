@@ -4,7 +4,6 @@ using biblioteca_kuantum.Api.OpenApi;
 using biblioteca_kuantum.BusinessLayer;
 using biblioteca_kuantum.DataAccessLayer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,12 +38,12 @@ builder.Services.AddHealthChecks();
 
 //Display the apikey configuration on OpenApi
 builder.Services.AddOpenApi(
-    options => 
+    options =>
         options.AddDocumentTransformer<ApiKeySecuritySchemeTransformer>()
             .AddOperationTransformer<OperationDetailsTransformer>()
             .AddSchemaTransformer<SchemaDetailsTransformer>()
             .AddDocumentTransformer<DocumentInfoTransformer>()
-    
+
     );
 
 var apiKey = builder.Configuration[ApiKeySchemeOptions.ConfigurationKey];

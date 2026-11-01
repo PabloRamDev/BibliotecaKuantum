@@ -4,7 +4,7 @@ using biblioteca_kuantum.BusinessLayer.Tests.Helpers;
 using biblioteca_kuantum.DataAccessLayer.Data;
 using biblioteca_kuantum.DataAccessLayer.Models;
 using biblioteca_kuantum.DataAccessLayer.Repositories;
-using biblioteca_kuantum.DataAccessLayer.RepositoryContracts;  
+using biblioteca_kuantum.DataAccessLayer.RepositoryContracts;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -97,7 +97,7 @@ namespace biblioteca_kuantum.BusinessLayer.Tests.Services
             Assert.Equal("ABCDEF0123456789", result.SerialCode);
             Assert.Equal("ISO-14001", result.PublicationCode);
         }
-        
+
         [Fact]
         public async Task CreateDocumentAsync_WithInvalidEmail_ThrowsValidationError()
         {

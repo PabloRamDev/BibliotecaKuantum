@@ -10,7 +10,7 @@ namespace biblioteca_kuantum.Api.Auth
     public class ApiKeySchemeHandler : AuthenticationHandler<ApiKeySchemeOptions>
     {
         public ApiKeySchemeHandler(IOptionsMonitor<ApiKeySchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder) : base(options, logger, encoder)
-        { 
+        {
         }
 
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()

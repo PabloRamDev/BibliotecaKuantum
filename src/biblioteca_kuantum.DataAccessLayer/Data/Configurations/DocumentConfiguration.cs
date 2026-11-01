@@ -15,5 +15,5 @@ namespace biblioteca_kuantum.DataAccessLayer.Data.Configurations
             builder.HasQueryFilter(d => d.DeletedAt == null);
         }
     }
-    
+
 }

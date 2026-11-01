@@ -10,12 +10,12 @@ namespace biblioteca_kuantum.DataAccessLayer
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddDataAccessLayer (this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddDataAccessLayer(this IServiceCollection services, IConfiguration configuration)
         {
             string? connectionString = configuration.GetConnectionString("PostgresConnection");
 
             services.AddDbContext<AppDbContext>
-                (options => 
+                (options =>
                 options.UseNpgsql(connectionString)
                 .UseSnakeCaseNamingConvention()
                 );

@@ -16,7 +16,7 @@ namespace biblioteca_kuantum.BusinessLayer.Services
         private readonly IMapper _mapper;
         private readonly IValidator<CreateDocument> _createDocumentValidator;
         private readonly IValidator<UpdateDocument> _updateDocumentValidator;
-        public DocumentService(IDocumentRepository documentRepository, IMapper mapper,IValidator<CreateDocument> createDocumentValidator , IValidator<UpdateDocument> updateDocumentValidator)
+        public DocumentService(IDocumentRepository documentRepository, IMapper mapper, IValidator<CreateDocument> createDocumentValidator, IValidator<UpdateDocument> updateDocumentValidator)
         {
             _documentRepository = documentRepository;
             _createDocumentValidator = createDocumentValidator;
@@ -26,9 +26,9 @@ namespace biblioteca_kuantum.BusinessLayer.Services
 
         public async Task<DocumentResponse?> CreateDocumentAsync(CreateDocument document, CancellationToken ct)
         {
-            
-            await  _createDocumentValidator.ValidateAndThrowAsync(document, ct);
-     
+
+            await _createDocumentValidator.ValidateAndThrowAsync(document, ct);
+
 
             Document documentModel = _mapper.Map<Document>(document);
 
@@ -46,7 +46,7 @@ namespace biblioteca_kuantum.BusinessLayer.Services
 
         public async Task<PagedResult<DocumentResponse>> FindDocumentAsync(int? id, string? serialCode, string? publicationCode, string? searchText, int pageNumber, int pageSize, CancellationToken ct)
         {
-            PagedResult<Document> modelPagedResult = await _documentRepository.FindDocument(id,serialCode, publicationCode, searchText, pageNumber, pageSize, ct);
+            PagedResult<Document> modelPagedResult = await _documentRepository.FindDocument(id, serialCode, publicationCode, searchText, pageNumber, pageSize, ct);
 
             return _mapper.Map<PagedResult<DocumentResponse>>(modelPagedResult);
         }
@@ -60,7 +60,7 @@ namespace biblioteca_kuantum.BusinessLayer.Services
 
         public async Task<DocumentResponse?> UpdateDocumentAsync(int id, UpdateDocument document, CancellationToken ct = default)
         {
-          await _updateDocumentValidator.ValidateAndThrowAsync(document, ct);
+            await _updateDocumentValidator.ValidateAndThrowAsync(document, ct);
 
             Document updateDocument = _mapper.Map<Document>(document);
 
