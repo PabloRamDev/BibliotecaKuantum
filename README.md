@@ -18,8 +18,8 @@ La API permite crear, consultar, buscar, actualizar y eliminar documentos, cada 
 - [Manejo de errores](#manejo-de-errores)
 - [Base de datos](#base-de-datos)
 - [Pruebas](#pruebas)
-- [Supuestos y decisiones de diseño](#supuestos-y-decisiones-de-diseño)
 - [Uso de AI](#uso-de-ai)
+- [Supuestos y decisiones de diseño](#supuestos-y-decisiones-de-diseño)
 
 ---
 
@@ -98,7 +98,7 @@ Luego edita `.env` y reemplaza los valores de ejemplo. Docker Compose lee este a
 ### 3. Levantar los contenedores
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 Al iniciar:
@@ -121,7 +121,10 @@ docker compose down -v
 
 ## Autenticación
 
-La API utiliza una clave enviada en el encabezado `X-Api-Key` de cada solicitud.
+La API utiliza una clave enviada en el encabezado `X-Api-Key` de cada solicitud. Esta se puede configurar en Swagger presionando en el botón Authorize y agregando nuestra Api Key definida en el arhivo .ENV para poder probar los distintos endpoints.
+
+![alt text](/docs/image-9.png)
+![alt text](/docs/image-10.png)
 
 ```http
 X-Api-Key: <tu-clave>
@@ -130,6 +133,7 @@ X-Api-Key: <tu-clave>
 
 ## Endpoints
 
+Se deja habilitada la ruta 
 
 Ruta base: `/api/Documents`
 
@@ -148,6 +152,7 @@ Ruta de Health Check: `/health` - Sin Autenticación
 | `GET` | `/health` | Entrega el estado (health) de la API. | `200 OK`, `503 Service Unavailable` |
 
 Se utiliza la funcionalidad incorporada de IHealthCheckBuilder, para ahorrar complejidad de implementar una solución propia. se implementa mediante un endpoint creado con Minimal Api Endpoints y es mapeado a OpenAPI. se permite revisar sin autenticación.
+
 
 ### Crear un documento
 
@@ -185,6 +190,8 @@ El documento y sus páginas se guardan en una única transacción. La fecha de c
 | `pageSize` | `int` | Cantidad de resultados por página, entre `1` y `100`. Por defecto `10`. |
 
 Los filtros se aplican por prioridad: si se envía `id`, se ignoran los demás; si no, se usa `serialCode`, luego `publicationCode` y por último `searchText`. Sin filtros, se listan todos los documentos activos.
+
+Al no ser especificado, no se permite listar todos los documentos al enviar los campos de búsqueda vacíos.
 
 Ejemplo: `GET /api/Documents/search?searchText=rojas&pageNumber=1&pageSize=10`
 
@@ -288,16 +295,6 @@ La prueba de búsqueda por texto (`searchText`) está marcada como omitida: util
 
 ---
 
-## Supuestos y decisiones de diseño
-
-- **`serialCode`:** el requisito indicaba una columna `VARCHAR(16)`, por lo que se aceptan códigos de hasta 16 caracteres hexadecimales, no exactamente 16.
-- **Inicialización de la base de datos:** se eligió un script SQL generado desde la migración de EF Core para que el proyecto funcione con un solo `docker compose up`, sin requerir el SDK de .NET ni herramientas adicionales.
-- **Eliminación lógica:** los documentos eliminados se conservan para trazabilidad; sus páginas se eliminan físicamente, ya que no tienen sentido sin el documento.
-- **"No encontrado" no es una excepción:** los servicios devuelven `null` o `false` y el controlador responde `404`. Las excepciones se reservan para datos inválidos y errores inesperados.
-- **Prioridad de filtros en la búsqueda:** los filtros no se combinan; se aplica el más específico enviado (`id` > `serialCode` > `publicationCode` > `searchText`).
-
----
-
 ## Uso de AI
 
 El uso de AI como apoyo para el desarrollo de la solución fue principalmente con el servicio [Claude de Anthropic](https://claude.ai), en su modalidad Chat y no de Agente vía Claude Code.
@@ -313,3 +310,15 @@ los principales usos de Claude fue en apoyar la creación de pruebas unitarias, 
 ![alt text](/docs/image-6.png)
 ### Open API Transformers
 ![alt text](/docs/image-8.png)
+
+---
+
+## Supuestos y decisiones de diseño
+
+- **`serialCode`:** el requisito indicaba una columna `VARCHAR(16)`, por lo que se aceptan códigos de hasta 16 caracteres hexadecimales, no exactamente 16.
+- **Inicialización de la base de datos:** se eligió un script SQL generado desde la migración de EF Core para que el proyecto funcione con un solo `docker compose up`, sin requerir el SDK de .NET ni herramientas adicionales.
+- **Eliminación lógica:** los documentos eliminados se conservan para trazabilidad; sus páginas se eliminan físicamente, ya que no tienen sentido sin el documento.
+- **"No encontrado" no es una excepción:** los servicios devuelven `null` o `false` y el controlador responde `404`. Las excepciones se reservan para datos inválidos y errores inesperados.
+- **Prioridad de filtros en la búsqueda:** los filtros no se combinan; se aplica el más específico enviado (`id` > `serialCode` > `publicationCode` > `searchText`), junto a eso, no se define un caso donde se podrían traer todos los documentos en una búsqueda vacía.
+
+Se agradece la oportunidad de haber sido parte de este proceso.
